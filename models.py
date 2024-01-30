@@ -158,3 +158,35 @@ class HateGroups(Base):
     status = sa.Column(sa.String(45), nullable=True)
     uni_name = sa.Column(sa.String(255), nullable=True)
     uni = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
+
+
+class Gifts(Base):
+    __tablename__ = 'gifts'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    country = sa.Column(sa.String, nullable=True)
+    sumofdonations = sa.Column(sa.Integer, nullable=True)
+    year = sa.Column(sa.Integer, nullable=True)
+    percentage = sa.Column(sa.Numeric, nullable=True)
+    university_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='university_id', nullable=True)
+
+
+class SMPosts(Base):
+    __tablename__ = 'sm_posts'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    sentiment = sa.Column(sa.Integer, nullable=True)
+    id_word = sa.Column(sa.Integer, nullable=True)
+    number_comments = sa.Column(sa.Integer, nullable=True)
+    number_likes = sa.Column(sa.Integer, nullable=True)
+    score = sa.Column(sa.Integer, nullable=True)
+    network = sa.Column(sa.String(255), nullable=True)
+    author_name = sa.Column(sa.String(255), nullable=True)
+    link = sa.Column(sa.String(255), nullable=True)
+    community = sa.Column(sa.String(255), nullable=True)
+    domain = sa.Column(sa.String(255), nullable=True)
+    post_text = sa.Column(sa.Text, nullable=True)
+    image = sa.Column(sa.Text, nullable=True)
+    uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
+    date_added_to_db = sa.Column(sa.DATETIME, nullable=True)
+    post_create = sa.Column(sa.DATETIME, nullable=True)

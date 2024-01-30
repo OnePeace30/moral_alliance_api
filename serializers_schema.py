@@ -1,5 +1,5 @@
 from models import (State, Universities, RelatedArticles,
-                    HateGroups)
+                    HateGroups, Gifts, SMPosts)
 
 class Field:
     pass
@@ -24,6 +24,7 @@ class FloatFieldSerializer(ModelFieldSerializer):
 
     def to_representation(self, obj, field):
         data = super().to_representation(obj, field)
+        if data is None: return None
         return float(data)
 
 class SerializerMethodField(object):
@@ -157,3 +158,41 @@ class HateGroupsSerializer(BaseSerializer):
 
     def get_university(self, obj):
         return obj.uni
+
+class GiftsSerializer(BaseSerializer):
+    sumOfDonations = ModelFieldSerializer('sumofdonations')
+    university = ModelFieldSerializer('university_id')
+    percentage = FloatFieldSerializer()
+
+    class Meta:
+        model = Gifts
+        fields = ( 
+            "id", "country", "sumOfDonations", 
+            "year", "percentage", "university",
+        )
+
+
+class SMPostsSerializer(BaseSerializer):
+    content = ModelFieldSerializer('post_text')
+    author = ModelFieldSerializer('author_name')
+    month = SerializerMethodField()
+    monthLabel = SerializerMethodField()
+    year = SerializerMethodField()
+    university = ModelFieldSerializer('uni_id')
+
+    class Meta:
+        model = SMPosts
+        fields = ( 
+            "id", "network", "link", "content", 
+            "author", "month", "monthLabel", 
+            "year", "university",
+        )
+
+    def get_month(self, obj):
+        return obj.post_create.month
+
+    def get_monthLabel(self, obj):
+        return obj.post_create.strftime("%B")
+    
+    def get_year(self, obj):
+        return obj.post_create.year

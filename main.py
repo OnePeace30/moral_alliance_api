@@ -1,12 +1,14 @@
 import json
 import requests
 import logging
+from datetime import datetime as dt, timedelta
 
-from models import State, Universities, RelatedArticles, HateGroups
+from models import (State, Universities, RelatedArticles, HateGroups, Gifts,
+                    SMPosts)
 from util import Database
 from serializers_schema import (
     StateSerializer, UniversitiesSerializer, RelatedArticlesSerializer,
-    HateGroupsSerializer)
+    HateGroupsSerializer, GiftsSerializer, SMPostsSerializer)
 from logging.handlers import TimedRotatingFileHandler
 
 logger = logging.getLogger("moral_alliance")
@@ -21,7 +23,9 @@ all_points = {
     'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
     'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "limit", "limit": 100, "order": RelatedArticles.date.desc()},
-    'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"}
+    'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
+    'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all"},
+    'posts': {"model": SMPosts, "serializer": SMPostsSerializer, "how": "filter", "order": SMPosts.score.asc(), "limit": 3, "filter": SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now())},
 }
 
 
@@ -58,6 +62,10 @@ if __name__ == '__main__':
             print()
         elif args['how'] == 'limit':
             objs = db.session.query(args['model']).order_by(args['order']).limit(args['limit'])
+            data = [args['serializer'](o).data for o in objs]
+            print()
+        elif args['how'] == 'filter':
+            objs = db.session.query(args['model']).filter(args['filter']).order_by(args['order']).limit(args['limit'])
             data = [args['serializer'](o).data for o in objs]
             print()
         r = ma.request(point, data)
