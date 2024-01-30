@@ -1,4 +1,5 @@
 import json
+import math
 import requests
 import logging
 from datetime import datetime as dt, timedelta
@@ -22,9 +23,9 @@ logger.addHandler(handler)
 all_points = {
     'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
-    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "limit", "limit": 100, "order": RelatedArticles.date.desc()},
+    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "filters": [RelatedArticles.date >= dt.now() - timedelta(days=1)], "order": RelatedArticles.date.desc()},
     'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
-    'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all"},
+    'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
     'posts': {"model": SMPosts, "serializer": SMPostsSerializer, "how": "filter", "order": SMPosts.score.asc(), "limit": 3, "filter": SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now())},
 }
 
@@ -57,7 +58,10 @@ if __name__ == '__main__':
     for point, args in all_points.items():
         ma = MoralAlliance()
         if args['how'] == 'all':
-            objs = db.session.query(args['model']).all()
+            objs = db.session.query(args['model'])
+            if args.get('filters'):
+                for filter in args.get('filters'):
+                    objs = objs.filter(filter)
             data = [args['serializer'](o).data for o in objs]
             print()
         elif args['how'] == 'limit':
@@ -68,10 +72,13 @@ if __name__ == '__main__':
             objs = db.session.query(args['model']).filter(args['filter']).order_by(args['order']).limit(args['limit'])
             data = [args['serializer'](o).data for o in objs]
             print()
-        r = ma.request(point, data)
-        if r.status_code == 200:
-            logger.info(f"Sended {len(data)} to {point} ")
-            logger.info(r.json())
-        else:
-            logger.error(f"Error send {len(data)} to {point}")
-            logger.info(r.json())
+        pages = math.ceil(len(data)/1000)
+        for page in range(0, pages):
+            d = data[page*1000: page*1000 + 1000]
+            r = ma.request(point, d)
+            if r.status_code == 200:
+                logger.info(f"Sended {len(d)} to {point} ")
+                logger.info(r.json())
+            else:
+                logger.error(f"Error send {len(d)} to {point}")
+                logger.info(r.json())
