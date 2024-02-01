@@ -1,5 +1,5 @@
 from models import (State, Universities, RelatedArticles,
-                    HateGroups, Gifts, SMPosts)
+                    HateGroups, Gifts, SMPosts, AlumniNotable)
 
 class Field:
     pass
@@ -196,3 +196,21 @@ class SMPostsSerializer(BaseSerializer):
     
     def get_year(self, obj):
         return obj.post_create.year
+
+
+class AlumniNotableSeralizer(BaseSerializer):
+    name = SerializerMethodField()
+    logo = ModelFieldSerializer('photo')
+    university = ModelFieldSerializer('uni_id')
+
+    class Meta:
+        model = AlumniNotable
+        fields = (
+            "id",
+            "name",
+            "logo",
+            "university",
+        )
+
+    def get_name(self, obj):
+        return f"{obj.first_name} {obj.last_name}"

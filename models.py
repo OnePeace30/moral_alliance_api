@@ -94,6 +94,8 @@ class Universities(Base):
     offical_statment = sa.Column(sa.Text, nullable=True)
     about = sa.Column(sa.Text, nullable=True)
 
+    posts = sa.orm.relationship("SMPosts", back_populates="university")
+
 class Sources(Base):
     __tablename__ = "sources"
 
@@ -149,6 +151,19 @@ class AlumniAll(Base):
     uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
 
 
+class AlumniNotable(Base):
+    __tablename__ = 'alumni_notable'
+    
+    id = sa.Column(sa.Integer, primary_key=True)
+    first_name = sa.Column(sa.String(255), nullable=True)
+    last_name = sa.Column(sa.String(255), nullable=True)
+    title = sa.Column(sa.String(255), nullable=True)
+    photo = sa.Column(sa.Text, nullable=True)
+    uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
+
+    university = sa.orm.relationship("Universities")
+
+
 class HateGroups(Base):
     __tablename__ = "hate_groups"
 
@@ -190,3 +205,5 @@ class SMPosts(Base):
     uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
     date_added_to_db = sa.Column(sa.DATETIME, nullable=True)
     post_create = sa.Column(sa.DATETIME, nullable=True)
+
+    university = sa.orm.relationship("Universities", back_populates="posts")
