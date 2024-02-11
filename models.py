@@ -93,6 +93,7 @@ class Universities(Base):
     logo = sa.Column(sa.Text, nullable=True)
     offical_statment = sa.Column(sa.Text, nullable=True)
     about = sa.Column(sa.Text, nullable=True)
+    contact_university = sa.Column(sa.Text, nullable=True)
 
     posts = sa.orm.relationship("SMPosts", back_populates="university")
 

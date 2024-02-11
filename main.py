@@ -36,7 +36,7 @@ meta_posts = {"posts":
 all_points = {
     'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
-    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "filters": [RelatedArticles.date >= dt.now() - timedelta(days=1)], "order": RelatedArticles.date.desc()},
+    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
     'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
     'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
     'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"}
@@ -104,3 +104,5 @@ if __name__ == '__main__':
     db = Database()
     for point, args in all_points.items():
         main(point, args)
+    # data = [i for i in range(1, 2502)]
+    # api('delete_gifts', data)
