@@ -106,7 +106,7 @@ class UniversitiesSerializer(BaseSerializer):
     officialStatement = ModelFieldSerializer('offical_statment')
     safeScore = ModelFieldSerializer('safe_score')
     statusDirection = ModelFieldSerializer('status_direction')
-    quote = ModelFieldSerializer('contact_university')
+    quote = ModelFieldSerializer('map_statement')
 
     class Meta:
         model = Universities
