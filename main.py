@@ -35,13 +35,13 @@ meta_posts = {"posts":
             }
 
 all_points = {
-    'states': {"model": State, "serializer": StateSerializer, "how": "all"},
+    # 'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
-    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
-    'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
-    'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
-    'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
-    'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"}
+    # 'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
+    # 'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
+    # 'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
+    # 'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
+    # 'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"}
 }
 
 

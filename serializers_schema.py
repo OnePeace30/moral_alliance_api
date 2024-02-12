@@ -107,6 +107,7 @@ class UniversitiesSerializer(BaseSerializer):
     safeScore = ModelFieldSerializer('safe_score')
     statusDirection = ModelFieldSerializer('status_direction')
     quote = ModelFieldSerializer('map_statement')
+    contact = ModelFieldSerializer('contact_university')
 
     class Meta:
         model = Universities
@@ -118,7 +119,7 @@ class UniversitiesSerializer(BaseSerializer):
             "socialMediaHarassemnt", "harassmentOnCampus", 
             "president", "studentCount", "status", 
             "statusDirection", "officialStatement", "about", 
-            "address", "safeScore", "quote"
+            "address", "safeScore", "quote", 'contact'
         )
 
 class RelatedArticlesSerializer(BaseSerializer):
