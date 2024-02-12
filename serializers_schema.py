@@ -1,5 +1,6 @@
 from models import (State, Universities, RelatedArticles,
-                    HateGroups, Gifts, SMPosts, AlumniNotable)
+                    HateGroups, Gifts, SMPosts, AlumniNotable,
+                    EventsAnnotated)
 
 class Field:
     pass
@@ -215,3 +216,14 @@ class AlumniNotableSeralizer(BaseSerializer):
 
     def get_name(self, obj):
         return f"{obj.first_name} {obj.last_name}"
+    
+
+class EventsAnnotatedSerializer(BaseSerializer):
+    university = ModelFieldSerializer('university_id')
+
+    class Meta:
+        model = EventsAnnotated
+        fields = (
+            'id', 'date', 'month_label',
+            'amount', 'university'
+        )

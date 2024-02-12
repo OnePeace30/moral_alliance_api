@@ -96,6 +96,7 @@ class Universities(Base):
     contact_university = sa.Column(sa.Text, nullable=True)
 
     posts = sa.orm.relationship("SMPosts", back_populates="university")
+    events = sa.orm.relationship("Events", back_populates="university")
 
 class Sources(Base):
     __tablename__ = "sources"
@@ -208,3 +209,33 @@ class SMPosts(Base):
     post_create = sa.Column(sa.DATETIME, nullable=True)
 
     university = sa.orm.relationship("Universities", back_populates="posts")
+
+
+class Events(Base):
+    __tablename__ = 'events'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    name = sa.Column(sa.Text, nullable=True)
+    event_type = sa.Column(sa.Text, nullable=True)
+    event_tags = sa.Column(sa.Text, nullable=True)
+    street_address = sa.Column(sa.Text, nullable=True)
+    state = sa.Column(sa.Text, nullable=True)
+    organizing_group = sa.Column(sa.Text, nullable=True)
+    organizing_chapters = sa.Column(sa.Text, nullable=True)
+    researcher_comment = sa.Column(sa.Text, nullable=True)
+    date = sa.Column(sa.DateTime, nullable=True)
+    lng = sa.Column(sa.DECIMAL, nullable=True)
+    lat = sa.Column(sa.DECIMAL, nullable=True)
+    uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
+
+    university = sa.orm.relationship("Universities", back_populates="events")
+
+
+class EventsAnnotated(Base):
+    __tablename__ = 'events_annotated'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    date = sa.Column(sa.String(), nullable=False)
+    month_label = sa.Column(sa.String(), nullable=False)
+    amount = sa.Column(sa.Integer, nullable=False)
+    university_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), nullable=True)
