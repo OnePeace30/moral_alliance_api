@@ -7,6 +7,7 @@ from datetime import datetime as dt, timedelta
 from models import (State, Universities, RelatedArticles, HateGroups, Gifts,
                     SMPosts, AlumniNotable, EventsAnnotated)
 from util import Database
+from annotated_tables import regenerate_gifts, regenerate_events
 from serializers_schema import (
     StateSerializer, UniversitiesSerializer, RelatedArticlesSerializer,
     HateGroupsSerializer, GiftsSerializer, SMPostsSerializer, AlumniNotableSeralizer,
@@ -64,13 +65,18 @@ class MoralAlliance(object):
 
 
 def main(point, args, filters = []):
+    if point == 'gifts':
+        to_delete = regenerate_gifts()
+        api('delete_gifts', to_delete)
+    elif point == 'events':
+        regenerate_events()
     if args['how'] == 'all':
         objs = db.session.query(args['model'])
         if args.get('filters'):
             for filter in args.get('filters'):
                 objs = objs.filter(filter)
         data = [args['serializer'](o).data for o in objs]
-        logger.info(data)
+        # logger.info(data)
         print()
     elif args['how'] == 'limit':
         objs = db.session.query(args['model']).order_by(args['order']).limit(args['limit'])
