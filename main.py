@@ -5,13 +5,13 @@ import logging
 from datetime import datetime as dt, timedelta
 
 from models import (State, Universities, RelatedArticles, HateGroups, Gifts,
-                    SMPosts, AlumniNotable, EventsAnnotated)
+                    SMPosts, AlumniNotable, EventsAnnotated, Events)
 from util import Database
 from annotated_tables import regenerate_gifts, regenerate_events
 from serializers_schema import (
     StateSerializer, UniversitiesSerializer, RelatedArticlesSerializer,
     HateGroupsSerializer, GiftsSerializer, SMPostsSerializer, AlumniNotableSeralizer,
-    EventsAnnotatedSerializer)
+    EventsAnnotatedSerializer, EventsSerializer)
 from logging.handlers import TimedRotatingFileHandler
 
 logger = logging.getLogger("moral_alliance")
@@ -42,7 +42,8 @@ all_points = {
     'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
     'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
     'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
-    'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"}
+    'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"},
+    # 'feed': {"model": Events, "serializer": EventsSerializer, "how": "all", "filters": [Events.uni_id.isnot(None)]}
 }
 
 

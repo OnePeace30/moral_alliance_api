@@ -79,9 +79,10 @@ def regenerate_events():
 
     with connection() as cursor:
         sql = f"""
-            select to_char(date, 'Mon YYYY'), to_char(date, 'Mon'), count(*), uni_id  from events
+            select to_char(date_trunc('month', date), 'YYYY-MM-DD') ,to_char(date_trunc('month', date), 'MON'),  uni_id, count(name)
+            from public.events
             where uni_id is not null and date is not null
-            group by 1, 2,4
+            group by date_trunc('month', date), uni_id
         """
         cursor.execute(sql)
         rows = cursor.fetchall()

@@ -1,6 +1,6 @@
 from models import (State, Universities, RelatedArticles,
                     HateGroups, Gifts, SMPosts, AlumniNotable,
-                    EventsAnnotated)
+                    EventsAnnotated, Events)
 
 class Field:
     pass
@@ -16,6 +16,17 @@ class ModelFieldSerializer(Field):
         else:
             _field = self.field_name
         return getattr(obj, _field)
+
+
+class DatetimeFieldSerializer(Field):
+
+    def __init__(self, format):
+        self.format = format
+
+    def to_representation(self, obj, field=None):
+        d = getattr(obj, field)
+        if d is None: return None
+        return d.strftime(self.format)
 
 
 class FloatFieldSerializer(ModelFieldSerializer):
@@ -221,10 +232,27 @@ class AlumniNotableSeralizer(BaseSerializer):
 
 class EventsAnnotatedSerializer(BaseSerializer):
     university = ModelFieldSerializer('university_id')
+    monthLabel = ModelFieldSerializer('month_label')
 
     class Meta:
         model = EventsAnnotated
         fields = (
-            'id', 'date', 'month_label',
+            'id', 'date', 'monthLabel',
             'amount', 'university'
+        )
+
+class EventsSerializer(BaseSerializer):
+    date = DatetimeFieldSerializer('%Y-%m-%d')
+    address = ModelFieldSerializer('street_address')
+    description = ModelFieldSerializer('name')
+    university = ModelFieldSerializer('uni_id')
+    lng = FloatFieldSerializer()
+    lat = FloatFieldSerializer()
+
+    class Meta:
+        model = Events
+        fields = (
+            "id", "date", 'lng', 'lat',
+            'address', 'description',
+            'university'
         )
