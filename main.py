@@ -5,13 +5,13 @@ import logging
 from datetime import datetime as dt, timedelta
 
 from models import (State, Universities, RelatedArticles, HateGroups, Gifts,
-                    SMPosts, AlumniNotable, EventsAnnotated, Events)
+                    SMPosts, AlumniNotable, EventsAnnotated, Events, UniversityPost)
 from util import Database
 from annotated_tables import regenerate_gifts, regenerate_events
 from serializers_schema import (
     StateSerializer, UniversitiesSerializer, RelatedArticlesSerializer,
     HateGroupsSerializer, GiftsSerializer, SMPostsSerializer, AlumniNotableSeralizer,
-    EventsAnnotatedSerializer, EventsSerializer)
+    EventsAnnotatedSerializer, EventsSerializer, UniversityPostSerializer)
 from logging.handlers import TimedRotatingFileHandler
 
 logger = logging.getLogger("moral_alliance")
@@ -38,7 +38,7 @@ meta_posts = {"posts":
 all_points = {
     'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
-    # 'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
+    'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
     'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
     'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
     'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
@@ -90,12 +90,17 @@ def main(point, args, filters = []):
         data = [args['serializer'](o).data for o in objs]
         print()
     api(point, data)
-    # if point == "universities":
-    #     for obj in objs:
-    #         meta = db.session.query(SMPosts).filter(SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now()))\
-    #                 .filter(SMPosts.uni_id == obj.id).order_by(SMPosts.score.asc()).limit(3)
-    #         data = [SMPostsSerializer(o).data for o in meta]
-    #         api('posts', data)
+    if point == "universities":
+        # for obj in objs:
+        #     meta = db.session.query(SMPosts).filter(SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now()))\
+        #             .filter(SMPosts.uni_id == obj.id).order_by(SMPosts.score.asc()).limit(3)
+        #     data = [SMPostsSerializer(o).data for o in meta]
+        #     api('posts', data)
+        for obj in objs:
+            meta = db.session.query(UniversityPost)\
+                    .filter(UniversityPost.uni_id == obj.id).all()
+            data = [UniversityPostSerializer(o).data for o in meta]
+            api('posts', data)
 
 
 def api(point, data):

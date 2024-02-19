@@ -1,6 +1,6 @@
 from models import (State, Universities, RelatedArticles,
                     HateGroups, Gifts, SMPosts, AlumniNotable,
-                    EventsAnnotated, Events)
+                    EventsAnnotated, Events, UniversityPost)
 
 class Field:
     pass
@@ -220,6 +220,42 @@ class SMPostsSerializer(BaseSerializer):
     
     def get_year(self, obj):
         return obj.post_create.year
+
+
+class UniversityPostSerializer(BaseSerializer):
+    network = ModelFieldSerializer('social_media')
+    link = ModelFieldSerializer('direct_link')
+    content = ModelFieldSerializer('text')
+    month = SerializerMethodField()
+    monthLabel = SerializerMethodField()
+    year = SerializerMethodField()
+    university = ModelFieldSerializer('uni_id')
+
+    class Meta:
+        model = UniversityPost
+        fields = (
+            "id", "network", "link", "content", 
+            "author", "month", "monthLabel", 
+            "year", "university",
+        )
+
+    def get_month(self, obj):
+        try:
+            return obj.month_year.month
+        except:
+            return None
+
+    def get_monthLabel(self, obj):
+        try:
+            return obj.post_create.strftime("%B")
+        except:
+            return None
+    
+    def get_year(self, obj):
+        try:
+            return obj.post_create.year
+        except:
+            return None
 
 
 class AlumniNotableSeralizer(BaseSerializer):

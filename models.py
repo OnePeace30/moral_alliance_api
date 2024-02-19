@@ -239,3 +239,16 @@ class EventsAnnotated(Base):
     month_label = sa.Column(sa.String(), nullable=False)
     amount = sa.Column(sa.Integer, nullable=False)
     university_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), nullable=True)
+
+
+class UniversityPost(Base):
+    __tablename__ = 'university_posts'
+
+    id = sa.Column(sa.Integer, primary_key=True)
+    uni_id = sa.Column(sa.Integer, sa.ForeignKey('universities.id'), name='uni_id', nullable=True)
+    uni_name = sa.Column(sa.Text, nullable=True)
+    text = sa.Column(sa.Text, nullable=True)
+    author = sa.Column(sa.Text, nullable=True)
+    social_media = sa.Column(sa.Text, nullable=True, name='social media')
+    direct_link = sa.Column(sa.Text, nullable=True, name='direct link')
+    month_year = sa.Column(sa.DateTime, nullable=True, name='month year')
