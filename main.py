@@ -90,12 +90,12 @@ def main(point, args, filters = []):
         data = [args['serializer'](o).data for o in objs]
         print()
     api(point, data)
-    if point == "universities":
-        for obj in objs:
-            meta = db.session.query(SMPosts).filter(SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now()))\
-                    .filter(SMPosts.uni_id == obj.id).order_by(SMPosts.score.asc()).limit(3)
-            data = [SMPostsSerializer(o).data for o in meta]
-            api('posts', data)
+    # if point == "universities":
+    #     for obj in objs:
+    #         meta = db.session.query(SMPosts).filter(SMPosts.post_create.between(dt.now() - timedelta(days=61), dt.now()))\
+    #                 .filter(SMPosts.uni_id == obj.id).order_by(SMPosts.score.asc()).limit(3)
+    #         data = [SMPostsSerializer(o).data for o in meta]
+    #         api('posts', data)
 
 
 def api(point, data):
@@ -116,5 +116,5 @@ if __name__ == '__main__':
     db = Database()
     for point, args in all_points.items():
         main(point, args)
-    # data = [i for i in range(1, 50000)]
-    # api('delete_articles', data)
+    # data = [i for i in range(1, 20000)]
+    # api('delete_posts', data)
