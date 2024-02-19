@@ -36,14 +36,14 @@ meta_posts = {"posts":
             }
 
 all_points = {
-    'states': {"model": State, "serializer": StateSerializer, "how": "all"},
+    # 'states': {"model": State, "serializer": StateSerializer, "how": "all"},
     'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all"},
     'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
-    'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
-    'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
-    'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
-    'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"},
-    'feed': {"model": Events, "serializer": EventsSerializer, "how": "all", "filters": [Events.uni_id.isnot(None)]}
+    # 'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
+    # 'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
+    # 'alumni': {"model": AlumniNotable, "serializer": AlumniNotableSeralizer, "how": "all"},
+    # 'incidents': {"model": EventsAnnotated, "serializer": EventsAnnotatedSerializer, "how": "all"},
+    # 'feed': {"model": Events, "serializer": EventsSerializer, "how": "all", "filters": [Events.uni_id.isnot(None)]}
 }
 
 
@@ -76,9 +76,10 @@ def main(point, args, filters = []):
         if args.get('filters'):
             for filter in args.get('filters'):
                 objs = objs.filter(filter)
+        objs = objs.all()
         data = [args['serializer'](o).data for o in objs]
-        logger.info("DATA")
-        logger.info(data)
+        # logger.info("DATA")
+        # logger.info(data)
         print()
     elif args['how'] == 'limit':
         objs = db.session.query(args['model']).order_by(args['order']).limit(args['limit'])
@@ -115,5 +116,5 @@ if __name__ == '__main__':
     db = Database()
     for point, args in all_points.items():
         main(point, args)
-    # data = [i for i in range(1, 2502)]
-    # api('delete_gifts', data)
+    # data = [i for i in range(1, 150)]
+    # api('delete_groups', data)

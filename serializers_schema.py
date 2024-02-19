@@ -119,6 +119,7 @@ class UniversitiesSerializer(BaseSerializer):
     statusDirection = ModelFieldSerializer('status_direction')
     quote = ModelFieldSerializer('map_statement')
     contact = ModelFieldSerializer('contact_university')
+    status = SerializerMethodField()
 
     class Meta:
         model = Universities
@@ -132,6 +133,15 @@ class UniversitiesSerializer(BaseSerializer):
             "statusDirection", "officialStatement", "about", 
             "address", "safeScore", "quote", 'contact'
         )
+
+    def get_status(self, obj):
+        if obj.safe_score is None:
+            return None
+        if obj.safe_score <= 5:
+            return 'Unsafe'
+        elif obj.safe_score > 5:
+            return 'Safe'
+
 
 class RelatedArticlesSerializer(BaseSerializer):
     university = SerializerMethodField()
