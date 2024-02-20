@@ -119,7 +119,7 @@ class UniversitiesSerializer(BaseSerializer):
     statusDirection = ModelFieldSerializer('status_direction')
     quote = ModelFieldSerializer('map_statement')
     contact = ModelFieldSerializer('contact_university')
-    status = SerializerMethodField()
+    # status = SerializerMethodField()
 
     class Meta:
         model = Universities

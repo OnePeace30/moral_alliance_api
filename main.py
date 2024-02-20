@@ -100,7 +100,8 @@ def main(point, args, filters = []):
             meta = db.session.query(UniversityPost)\
                     .filter(UniversityPost.uni_id == obj.id).all()
             data = [UniversityPostSerializer(o).data for o in meta]
-            api('posts', data)
+            for d in data:
+                api('posts', [d])
 
 
 def api(point, data):

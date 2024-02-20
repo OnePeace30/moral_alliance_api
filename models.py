@@ -94,6 +94,8 @@ class Universities(Base):
     offical_statment = sa.Column(sa.Text, nullable=True)
     about = sa.Column(sa.Text, nullable=True)
     contact_university = sa.Column(sa.Text, nullable=True)
+    keywords_from_news = sa.Column(sa.String, nullable=True)
+    words_to_determine_atisimitics_event = sa.Column(sa.String, nullable=True)
 
     posts = sa.orm.relationship("SMPosts", back_populates="university")
     events = sa.orm.relationship("Events", back_populates="university")
@@ -122,6 +124,8 @@ class RelatedArticles(Base):
     text = sa.Column(sa.Text, nullable=True)
     pic = sa.Column(sa.Text, nullable=True)
     date = sa.Column(sa.DATETIME, nullable=True)
+    to_send = sa.Column(sa.Boolean, default=False)
+    
     university = sa.orm.relationship("Universities", secondary=article_to_uni, backref="articles")
     state = sa.orm.relationship("State", secondary=article_to_state, backref="articles")
 
