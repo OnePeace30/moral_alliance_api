@@ -119,6 +119,7 @@ class UniversitiesSerializer(BaseSerializer):
     statusDirection = ModelFieldSerializer('status_direction')
     quote = ModelFieldSerializer('map_statement')
     contact = ModelFieldSerializer('contact_university')
+    subStatus = ModelFieldSerializer('status_sub')
     # status = SerializerMethodField()
 
     class Meta:
@@ -131,7 +132,8 @@ class UniversitiesSerializer(BaseSerializer):
             "socialMediaHarassemnt", "harassmentOnCampus", 
             "president", "studentCount", "status", 
             "statusDirection", "officialStatement", "about", 
-            "address", "safeScore", "quote", 'contact'
+            "address", "safeScore", "quote", 'contact',
+            'subStatus'
         )
 
     def get_status(self, obj):
@@ -152,7 +154,7 @@ class RelatedArticlesSerializer(BaseSerializer):
         fields = ( 
             "id", "title", "pic", 
             "text", "link", "university", 
-            "state",
+            "state", 'rank'
         )
 
     def get_state(self, obj):
@@ -247,13 +249,13 @@ class UniversityPostSerializer(BaseSerializer):
 
     def get_monthLabel(self, obj):
         try:
-            return obj.post_create.strftime("%B")
+            return obj.month_year.strftime("%b")
         except:
             return None
     
     def get_year(self, obj):
         try:
-            return obj.post_create.year
+            return obj.month_year.year
         except:
             return None
 
@@ -290,7 +292,8 @@ class EventsAnnotatedSerializer(BaseSerializer):
 class EventsSerializer(BaseSerializer):
     date = DatetimeFieldSerializer('%Y-%m-%d')
     address = ModelFieldSerializer('street_address')
-    description = ModelFieldSerializer('name')
+    # description = ModelFieldSerializer('name')
+    description = SerializerMethodField()
     university = ModelFieldSerializer('uni_id')
     lng = FloatFieldSerializer()
     lat = FloatFieldSerializer()
@@ -302,3 +305,9 @@ class EventsSerializer(BaseSerializer):
             'address', 'description',
             'university'
         )
+
+    def get_description(self, obj):
+        if obj.event_type is not None and obj.event_type != 'OTHER':
+            return f"{obj.event_type} - {obj.name}"
+        else:
+            return obj.name

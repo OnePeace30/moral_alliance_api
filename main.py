@@ -120,7 +120,14 @@ def api(point, data):
 
 if __name__ == '__main__':
     db = Database()
+    # data = [i for i in range(1, 50000)]
+    # data = [48484]
+    # api('delete_articles', data)
+    # data = [i for i in range(1, 50)]
+    # api('delete_universities', data)
+    # data = [i for i in range(1, 250)]
+    # api('delete_posts', data)
+    # data = [i for i in range(1, )]
     for point, args in all_points.items():
         main(point, args)
-    # data = [i for i in range(1, 20000)]
-    # api('delete_posts', data)
+    
