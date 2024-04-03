@@ -89,14 +89,14 @@ def regenerate_events():
         for row in rows:
             event = db.session.query(EventsAnnotated).filter(EventsAnnotated.date == row[0], EventsAnnotated.university_id == row[3]).one_or_none()
             if event:
-                event.amount = row[2]
+                event.amount = row[3]
                 db.session.commit()
             else:
                 new = EventsAnnotated(
                     date = row[0],
                     month_label = row[1],
-                    amount = row[2],
-                    university_id = row[3],
+                    amount = row[3],
+                    university_id = row[2],
                 )
                 db.session.add_all([new])
                 db.session.commit()

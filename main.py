@@ -128,6 +128,8 @@ if __name__ == '__main__':
     # data = [i for i in range(1, 250)]
     # api('delete_posts', data)
     # data = [i for i in range(1, )]
+    # data = [i for i in range(1, 282)]
+    # api('delete_incidents', data)
     for point, args in all_points.items():
         main(point, args)
     

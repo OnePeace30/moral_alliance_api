@@ -20,9 +20,10 @@ logger.addHandler(handler)
 
 if __name__ == '__main__':
     db = Database()
-    events = db.session.query(Events).all()
+    events = db.session.query(Events).filter(Events.uni_id == None)
     universities = db.session.query(Universities).all()
     for event in events:
+        print(event.id)
         dist = 40000
         if event.lng is None: continue
         point = (event.lat, event.lng)
