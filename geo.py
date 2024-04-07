@@ -1,7 +1,7 @@
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderServiceError
 
-from models import Events
+from models import Events, Universities
 from util import Database
 
 
@@ -9,7 +9,7 @@ from util import Database
 geolocator = Nominatim(user_agent="pythonsheets")
 def main():
     db = Database()
-    events = db.session.query(Events).filter(Events.lng == None)
+    events = db.session.query(Universities).filter(Universities.lng == None)
     for event in events:
         
         lng, lat = address_geocode(event)
@@ -21,7 +21,7 @@ def main():
 
 def address_geocode(e):
     try:
-        address = f"{e.street_address}"
+        address = f"{e.address}"
         print(address)
         location = geolocator.geocode(address, timeout=100)
         return location.longitude, location.latitude
