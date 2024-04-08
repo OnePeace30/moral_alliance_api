@@ -98,6 +98,7 @@ class Universities(Base):
     words_to_determine_atisimitics_event = sa.Column(sa.String, nullable=True)
     status_desc = sa.Column(sa.String(45), nullable=True)
     status_sub = sa.Column(sa.String(45), nullable=True)
+    done = sa.Column(sa.Boolean, nullable=True)
 
     posts = sa.orm.relationship("SMPosts", back_populates="university")
     events = sa.orm.relationship("Events", back_populates="university")

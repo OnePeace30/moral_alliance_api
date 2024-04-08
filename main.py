@@ -37,7 +37,7 @@ meta_posts = {"posts":
 
 all_points = {
     # 'states': {"model": State, "serializer": StateSerializer, "how": "all"},
-    'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all", "filters": [Universities.lng.isnot(None)]},
+    'universities': {"model": Universities, "serializer": UniversitiesSerializer, "how": "all", "filters": [Universities.done.is_(True)]},
     # 'articles': {"model": RelatedArticles, "serializer": RelatedArticlesSerializer, "how": "all", "order": RelatedArticles.date.desc()},
     # 'groups': {"model": HateGroups, "serializer": HateGroupsSerializer, "how": "all"},
     # 'gifts': {"model": Gifts, "serializer": GiftsSerializer, "how": "all", "filters": [Gifts.university_id.isnot(None)]},
@@ -123,8 +123,8 @@ if __name__ == '__main__':
     # data = [i for i in range(1, 50000)]
     # data = [48484]
     # api('delete_articles', data)
-    # data = [i for i in range(1, 50)]
-    # api('delete_universities', data)
+    data = [i for i in range(1, 500)]
+    api('delete_universities', data)
     # data = [i for i in range(1, 250)]
     # api('delete_posts', data)
     # data = [i for i in range(1, )]
