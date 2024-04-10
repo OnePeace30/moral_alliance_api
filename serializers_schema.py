@@ -107,10 +107,10 @@ class UniversitiesSerializer(BaseSerializer):
     lng = FloatFieldSerializer()
     lat = FloatFieldSerializer()
     hateSpeechGrowth = FloatFieldSerializer('hate_speech_growth')
-    hateInfractionGrowth = FloatFieldSerializer('hate_speech_in_fraction')
-    hateSpeechScore = FloatFieldSerializer('hate_speech_score')
-    hateInfractionScore = FloatFieldSerializer('hate_infraction_score')
-    socialMediaHarassemnt = FloatFieldSerializer('social_media_harassment')
+    hateInfractionGrowth = FloatFieldSerializer('hate_incidents_growth')
+    # hateSpeechScore = FloatFieldSerializer('hate_speech_score')
+    # hateInfractionScore = FloatFieldSerializer('hate_infraction_score')
+    # socialMediaHarassemnt = FloatFieldSerializer('social_media_harassment')
     harassmentOnCampus = FloatFieldSerializer('harrasment_on_campus')
     president = ModelFieldSerializer('president_name')
     studentCount = ModelFieldSerializer('num_of_students')
@@ -127,9 +127,8 @@ class UniversitiesSerializer(BaseSerializer):
         fields = ( 
             "id", "name", "state", "logo", 
             "lng", "lat", "hateSpeechGrowth", 
-            "hateInfractionGrowth", #"quote", 
-            "hateSpeechScore", "hateInfractionScore", 
-            "socialMediaHarassemnt", "harassmentOnCampus", 
+            "hateInfractionGrowth",
+            "harassmentOnCampus", 
             "president", "studentCount", "status", 
             "statusDirection", "officialStatement", "about", 
             "address", "safeScore", "quote", 'contact',
